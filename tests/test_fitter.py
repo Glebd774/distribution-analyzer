@@ -1,6 +1,7 @@
 """Юнит-тесты для distribution_fitter."""
 import numpy as np
 import pytest
+from scipy import stats
 
 from src.distribution_fitter import (
     DEFAULT_DISTRIBUTIONS,
@@ -17,13 +18,14 @@ def _gen(dist_name: str, n: int = 2000, seed: int = 0) -> np.ndarray:
     if dist_name == "gamma": return rng.gamma(shape=2.0, scale=1.5, size=n)
     if dist_name == "lognorm": return rng.lognormal(mean=0, sigma=0.5, size=n)
     if dist_name == "weibull_min": return rng.weibull(a=2.0, size=n)
-    if dist_name == "arcsine": return rng.arcsine(size=n)
-    if dist_name == "nakagami": return rng.nakagami(nu=2.0, size=n)
-    if dist_name == "rice": return rng.rice(b=2.0, scale=1.0, size=n)
-    if dist_name == "skewnorm": return rng.skewnorm(a=5.0, size=n)
-    if dist_name == "gennorm": return rng.gennorm(beta=2.0, size=n)
     if dist_name == "laplace": return rng.laplace(size=n)
     if dist_name == "t": return rng.standard_t(df=5, size=n)
+    if dist_name == "arcsine": return stats.arcsine.rvs(size=n, random_state=seed)
+    if dist_name == "nakagami": return stats.nakagami.rvs(nu=2.0, size=n, random_state=seed)
+    if dist_name == "rice": return stats.rice.rvs(b=2.0, scale=1.0, size=n, random_state=seed)
+    if dist_name == "gennorm": return stats.gennorm.rvs(beta=1.5, size=n, random_state=seed) # beta=1.5, чтобы не совпало с Гауссом
+    if dist_name == "skewnorm": return stats.skewnorm.rvs(a=5.0, size=n, random_state=seed)
+    
     raise ValueError(dist_name)
 
 
